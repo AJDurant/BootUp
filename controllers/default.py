@@ -11,14 +11,35 @@
 
 def index():
     """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    Home Page
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
+    BootUp will have a home page that shows the 5 most recently created projects
+    and the 5 projects closest to their funding goal.
     """
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
+
+    return dict()
+
+
+def project():
+    """
+    Bootable Pages and Pledging
+
+    For each project that is Open for Pledges, funders will be able visit a page where they
+    can get information about a Bootable. This page should show the funding goal and the
+    total pledged progress toward that goal and the pledge/reward options for the project.
+    The page should also show the usernames of those who have contributed, what they
+    have contributed and what their expected rewards will be.
+    Users can choose to pledge money to a Bootable from a pre-defined set of pledge values
+    (referred to by users as “a Booting”) in exchange for a pre-defined set of rewards.
+    When users pledge money to the total pledged, their name and pledge level is added to
+    the list of pledgers. Further, when users visit pages to which they have already pledged,
+    that page should indicate
+    """
+
+    project = db.project(request.args(0,cast=int)) or redirect(URL('index'))
+
+    return dict()
+
 
 
 def user():
@@ -38,34 +59,3 @@ def user():
     """
     return dict(form=auth())
 
-
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
-
-
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
-
-@auth.requires_login() 
-def api():
-    """
-    this is example of API with access control
-    WEB2PY provides Hypermedia API (Collection+JSON) Experimental
-    """
-    from gluon.contrib.hypermedia import Collection
-    rules = {
-        '<tablename>': {'GET':{},'POST':{},'PUT':{},'DELETE':{}},
-        }
-    return Collection(db).process(request,response,rules)
