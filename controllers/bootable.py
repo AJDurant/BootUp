@@ -1,3 +1,12 @@
+"""
+This is the bootable controller
+ - project displays project information
+ - create is used to create new projects
+ - edit is used to update projects and add reward goals
+ - manager is used to view a users bootables and access edit for them
+
+
+"""
 
 def project():
     """
@@ -76,7 +85,7 @@ def edit():
     return dict(editform=editform)
 
 @auth.requires_login()
-def manage():
+def manager():
     """
     Bootable Manager Dashboard
 
