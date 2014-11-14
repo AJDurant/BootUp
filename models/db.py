@@ -1,33 +1,29 @@
-# -*- coding: utf-8 -*-
+"""
+This model initialises the database and constructs the auth object and tables
 
+
+"""
+
+from gluon.custom_import import track_changes; track_changes(True)
+
+# Setup db object
 db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
 
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'
 response.generic_patterns = ['*'] if request.is_local else []
 
-## (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
-## (optional) static assets folder versioning
-# response.static_version = '0.0.0'
-#########################################################################
-## Here is sample code if you need for
-## - email capabilities
-## - authentication (registration, login, logout, ... )
-## - authorization (role based authorization)
-## - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
-## - old style crud actions
-## (more options discussed in gluon/tools.py)
-#########################################################################
+# setup auth module
+# this is a custom module due to overriding Auth.navbar()
+# the bug in Auth.navbar() has been reported
+from myAuth import myAuth
+auth = myAuth(db)
 
-from gluon.tools import Auth
 
-auth = Auth(db)
-
+# Define custom user table
 db.define_table(
     auth.settings.table_user_name,
-    Field('username', length=128),
+    Field('username', length=128, unique=True),
     Field('realname', length=128, default='', label='Name'),
     Field('birthdate', 'date', required=True),
     Field('email', length=128, default='', unique=True),                                    # required

@@ -1,3 +1,10 @@
+/*
+    This provides CSS for the app on top of the bootstrap styles
+
+
+ */
+
+
 
 /* Sticky footer
 -------------------------------------------------- */
@@ -22,9 +29,64 @@ body {
 }
 
 
-/* Nav
+/* Nav overides
 -------------------------------------------------- */
 
 .nav-login a.dropdown-toggle:after {
     content: " ▾";
+}
+
+
+/* hide id field on edit form */
+div#project_id__row {
+    visibility: hidden;
+    display: none;
+}
+
+
+/*********** web2py specific ***********/
+div.flash {
+    font-weight:bold;
+    display:none;
+    position:fixed;
+    padding:10px;
+    right:250px;
+    min-width:280px;
+    opacity:0.95;
+    margin:0px 0px 10px 10px;
+    vertical-align:middle;
+    cursor:pointer;
+    color:#fff;
+    background-color:#000;
+    border:2px solid #fff;
+    border-radius:8px;
+    -o-border-radius: 8px;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    background-image: -webkit-linear-gradient(top,#222,#000);
+    background-image: -o-linear-gradient(top,#222,#000);
+    background-image: -moz-linear-gradient(90deg, #222, #000);
+    background-image: linear-gradient(top,#222,#000);
+    background-repeat: repeat-x;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    z-index:2000;
+}
+
+div.flash #closeflash{color:inherit; float:right; margin-left:15px;}
+.ie-lte7  div.flash #closeflash
+{color:expression(this.parentNode.currentStyle['color']);float:none;position:absolute;right:4px;}
+
+div.flash:hover { opacity:0.25; }
+
+.error_wrapper {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.error_wrapper {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }

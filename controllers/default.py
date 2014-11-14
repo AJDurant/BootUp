@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
+"""
+This is the main application controller
+ - index is the default action of any application
+ - user is required for authentication and authorization
 
-#########################################################################
-## This is a sample controller
-## - index is the default action of any application
-## - user is required for authentication and authorization
-## - download is for downloading files uploaded in the db (does streaming)
-## - api is an example of Hypermedia API support and access control
-#########################################################################
+
+"""
 
 def index():
     """
@@ -16,32 +13,55 @@ def index():
     BootUp will have a home page that shows the 5 most recently created projects
     and the 5 projects closest to their funding goal.
     """
+    # Set page title
+    response.title = "BootUp"
+    response.subtitle = "the next big crowdfunding web application in the UK"
 
     return dict()
 
-
-def project():
+def search():
     """
-    Bootable Pages and Pledging
+    Searches
 
-    For each project that is Open for Pledges, funders will be able visit a page where they
-    can get information about a Bootable. This page should show the funding goal and the
-    total pledged progress toward that goal and the pledge/reward options for the project.
-    The page should also show the usernames of those who have contributed, what they
-    have contributed and what their expected rewards will be.
-    Users can choose to pledge money to a Bootable from a pre-defined set of pledge values
-    (referred to by users as “a Booting”) in exchange for a pre-defined set of rewards.
-    When users pledge money to the total pledged, their name and pledge level is added to
-    the list of pledgers. Further, when users visit pages to which they have already pledged,
-    that page should indicate
+    People interested in pledging should be able to search from any page for projects of
+    interest. They should be able to search for words in the title or in the short description.
+    People interested in pledging should be able to search by category of project and receive
+    a list of projects back in that category. The following is the complete list of categories to
+    which a project can belong:
+    Art, Comics, Crafts, Fashion, Film, Games, Music, Photography, Technology
     """
+    # Set page title
+    response.title = 'Search Results:'
 
-    project = db.project(request.args(0,cast=int)) or redirect(URL('index'))
+    form = FORM(
+        DIV(
+            LABEL('Search', _class="sr-only", _for="search"),
+            INPUT(_type="text", _name="search", _placeholder="Search", _class="form-control"),
+            _class="form-group"
+        ),
+        TAG.button(
+            SPAN(_class="glyphicon glyphicon-search"),
+            _type="submit",
+            _class="btn btn-default"),
+        _class="navbar-form navbar-right",
+        _role="search",
+        _action=URL('default', 'search', extension=''))
 
-    return dict()
+    if form.accepts(request,session):
+        response.flash = 'Search successful!'
+        # Put search query in subtitle
+        response.subtitle = form.vars.search
+        # Search db for projects, either from short description, title or category
+        # TODO
+        results = form.vars.search
+    elif form.errors:
+        response.flash = 'Search has errors!'
+        results = None
+    else:
+        results = None
+    return dict(form = form, results = results)
 
-
-
+# Default web2py User function
 def user():
     """
     exposes:

@@ -1,3 +1,10 @@
+"""
+This model initialises the database tables for app
+
+
+"""
+
+
 
 # DB Table for BootUp Users in db.py for auth
 
@@ -19,18 +26,27 @@ db.define_table(
 # DB Table for BootUp Projects
 db.define_table(
     'project',
-    Field('title', required=True),
+    Field('title', required=True, label='Bootable Title'),
     Field('category', 'reference category', required=True),
-    Field('status', 'reference status', required=True),
-    Field('goal', 'integer', required=True),
-    Field('img', 'upload', autodelete=True, uploadseparate=True),
-    Field('sdesc', 'string', length=120, required=True),
-    Field('ldesc', 'text', required=True),
-    Field('story', 'text', required=True),
+    Field('status', 'reference status', writable=False, readable=False, required=True),
+    Field('goal', 'integer', required=True, label='Funding Goal', comment='What do you aim to raise? (in GBP £)'),
+    Field('img', 'upload', autodelete=True, uploadseparate=True, label='Image', comment='Give your Bootable an image. Max Size: 1024x768 (jpg, png or gif) recommended: 4:3 ratio'),
+    Field('sdesc', 'string', length=120, required=True, label='Short Description', comment='Describe your Bootable in 120 characters or less.'),
+    Field('ldesc', 'text', required=True, label='Long Description'),
+    Field('story', 'text', required=True, label='Story', comment='Why do you want this project funded?'),
     Field('manager', 'reference auth_user', writable=False, readable=False, required=True),
     format='%(title)s'
 )
 
+# Project data constraints
+db.project.title.requires = IS_NOT_EMPTY()
+db.project.category.requires = IS_IN_DB(db, db.category.id, '%(name)s', error_message='You must select a category')
+db.project.status.requires = IS_IN_DB(db, db.status.id, '%(name)s')
+db.project.goal.requires = IS_NOT_EMPTY()
+db.project.img.requires = IS_IMAGE(extensions=('png', 'jpg', 'jpeg', 'gif'), maxsize=(1024, 768))
+db.project.sdesc.requires = IS_NOT_EMPTY()
+db.project.ldesc.requires = IS_NOT_EMPTY()
+db.project.story.requires = IS_NOT_EMPTY()
 db.project.manager.requires = IS_IN_DB(db, db.auth_user.id, '%(uname)s')
 
 # Lookup table for project rewards
