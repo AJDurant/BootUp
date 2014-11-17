@@ -43,6 +43,14 @@ div#project_id__row {
     display: none;
 }
 
+div#submit_record__row input,
+div#submit_record__row button {
+    margin-right: 10px;
+}
+
+
+
+
 
 /*********** web2py specific ***********/
 div.flash {

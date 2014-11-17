@@ -25,7 +25,7 @@ db.define_table(
     auth.settings.table_user_name,
     Field('username', length=128, unique=True),
     Field('realname', length=128, default='', label='Name'),
-    Field('birthdate', 'date', required=True),
+    Field('birthdate', 'date', required=True, comment='format: YYYY-MM-DD'),
     Field('email', length=128, default='', unique=True),                                    # required
     Field('password', 'password', length=512, readable=False, label='Password'),            # required
     Field('registration_key', length=512, writable=False, readable=False, default=''),      # required
@@ -52,3 +52,6 @@ auth.define_tables(username=True, signature=False)
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
+
+# set formstyle to nice bootstrap
+auth.settings.formstyle = 'bootstrap3_inline'
