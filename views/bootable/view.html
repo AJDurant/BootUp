@@ -18,7 +18,7 @@
             {{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
                 <button type="button" class="btn btn-info disabled">Pledged!</button>
             {{else:}}
-                <button type="button" class="btn btn-primary">Give a Booting!</button>
+                <a type="button" class="btn btn-primary" href="{{=URL('bootable', 'pledge', args=[project.id])}}">Give a Booting!</a>
             {{pass}}
         {{elif project.status.id == 3:}}
             <button type="button" class="btn btn-success disabled">{{=project.status.name}}!</button>
@@ -29,11 +29,11 @@
 </header>
 
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-sm-6">
         <p class="product-description">{{=project.ldesc}}</p>
 
     </div>
-    <div class="col-md-7 project-image">
+    <div class="col-sm-6 project-image">
         <img src="{{=URL('default', 'download',args=project.img)}}" class="img-responsive" align="right">
     </div>
 </div>

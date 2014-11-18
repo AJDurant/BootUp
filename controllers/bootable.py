@@ -59,6 +59,39 @@ def view():
     return locals()
 
 @auth.requires_login()
+def pledge():
+    """
+    Bootable Pledging
+
+    Users can choose to pledge money to a Bootable from a pre-defined set of pledge values
+    (referred to by users as “a Booting”) in exchange for a pre-defined set of rewards.
+    When users pledge money to the total pledged, their name and pledge level is added to
+    the list of pledgers. Further, when users visit pages to which they have already pledged,
+    that page should indicate
+    """
+
+    # Get project or redirect
+    project = db.project(request.args(0,cast=int)) or redirect(URL('default', 'index'))
+
+    pledgeform = SQLFORM(db.pledge, formstyle='bootstrap3_inline')
+
+    pledgeform.vars.projectid = project.id
+    pledgeform.vars.userid = auth.user_id
+
+    if pledgeform.process().accepted:
+        session.flash = 'Bootable Pledged'
+        redirect(URL('bootable', 'view', args=project.id))
+    elif pledgeform.errors:
+        response.flash = 'Error with form'
+    else:
+        pass
+
+    response.title = 'Give A Booting'
+    response.subtitle = project.title
+
+    return locals()
+
+@auth.requires_login()
 def create():
     """
     Creating Bootables
@@ -80,15 +113,14 @@ def create():
     form.vars.manager = auth.user_id
 
     if form.process().accepted:
-        response.flash = 'Bootable Created'
-        # Redirect to edit page for adding rewards
-        # TODO
+        session.flash = 'Bootable Created'
+        redirect(URL('bootable', 'edit', args=project.id))
     elif form.errors:
         response.flash = 'Error with form'
     else:
         pass
 
-    return dict(form=form)
+    return locals()
 
 
 @auth.requires_login()
@@ -114,7 +146,8 @@ def edit():
     rewardform.vars.projectid = project.id
 
     if editform.process().accepted:
-        response.flash = 'Bootable Updated'
+        session.flash = 'Bootable Updated'
+        redirect(URL('bootable', 'view', args=project.id))
     elif editform.errors:
         response.flash = 'Error with form'
     else:

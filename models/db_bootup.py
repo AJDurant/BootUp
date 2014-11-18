@@ -68,8 +68,8 @@ db.reward.reward.requires = IS_NOT_EMPTY()
 db.define_table(
     'pledge',
     Field('projectid', 'reference project', writable=False, readable=False, required=True),
-    Field('userid', 'reference auth_user', required=True),
-    Field('amount', 'integer', required=True)
+    Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
+    Field('amount', 'integer', required=True, comment='Amount to pledge to the Bootable in whole £s')
 )
 
 # Pledge data constraints
