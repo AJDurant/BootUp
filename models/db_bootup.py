@@ -49,6 +49,21 @@ db.project.ldesc.requires = IS_NOT_EMPTY()
 db.project.story.requires = IS_NOT_EMPTY()
 db.project.manager.requires = IS_IN_DB(db, db.auth_user.id, '%(username)s')
 
+# Project Virtual Fields
+# Get the pledges for this project
+db.project.pledges = Field.Virtual(
+    'pledges',
+    lambda row: db(db.pledge.projectid==row.project.id).select())
+# Get the rewards for this project
+db.project.rewards = Field.Virtual(
+    'rewards',
+    lambda row: db(db.reward.projectid==row.project.id).select())
+# Calculate the total pledged
+db.project.total = Field.Virtual(
+    'total',
+    lambda row: sum(pledge.amount for pledge in db(db.pledge.projectid==row.project.id).select()))
+db.project.percent = Field.Method(lambda row: row.project.total*100/row.project.goal)
+
 # Lookup table for project rewards
 db.define_table(
     'reward',
@@ -64,6 +79,13 @@ db.reward.projectid.requires = IS_IN_DB(db, db.project.id, '%(title)s')
 db.reward.amount.requires = IS_NOT_EMPTY()
 db.reward.reward.requires = IS_NOT_EMPTY()
 
+# Reward Virtual Fields
+# Calculate backers for each reward level
+db.reward.backers = Field.Virtual(
+    'backers',
+    lambda row: sum(pledge.amount >= row.reward.amount for pledge in db(db.pledge.projectid==row.reward.projectid).select()))
+
+
 # Lookup table for project pledges
 db.define_table(
     'pledge',
@@ -71,6 +93,13 @@ db.define_table(
     Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
     Field('amount', 'integer', required=True, comment='Amount to pledge to the Bootable in whole £s')
 )
+
+# Pledge Virtual Fields
+# Get user data for pledger
+db.pledge.pledger = Field.Virtual(
+    'pledger',
+    lambda row: db.auth_user(row.pledge.userid))
+
 
 # Pledge data constraints
 db.pledge.projectid.requires = IS_IN_DB(db, db.project.id, '%(title)s')

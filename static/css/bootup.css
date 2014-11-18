@@ -11,17 +11,17 @@
     margin-bottom: 20px;
 }
 
-.project-header .progress {
+.project-progress.progress {
     margin: 0;
     margin-top: 7px;
 }
-.project-header .progress-bar {
+.project-progress .progress-bar {
     min-width: 15%;
     max-width: 100%;
 }
 
 .project-image {
-text-align: right;
+    text-align: right;
 }
 
 /* Project Edit

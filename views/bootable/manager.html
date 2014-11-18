@@ -1,0 +1,41 @@
+{{extend 'layout.html'}}
+
+{{if projects:}}
+    {{for project in projects:}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="panel-title">{{=project.title}} <small>{{=project.sdesc}}</small></span>
+                <span class="label pull-right {{if project.status.id in [1,4]:}}label-danger{{elif project.status.id==3:}}label-success{{else:}}label-info{{pass}}">{{=project.status.name}}</span>
+                <span class="label pull-right label-primary">{{=project.category.name}}</span>
+            </div>
+            <div class="panel-body">
+                <div class="col-xs-8 col-sm-10">
+                    {{include "subview/project_progress.html"}}
+                </div>
+                <div class="col-xs-4 col-sm-2 text-right">
+                    <a type="button" class="btn"></a>
+                </div>
+            </div>
+        </div>
+    {{pass}}
+{{else:}}
+    <h3>You haven't created any Bootables yet!</h3>
+{{pass}}
+
+
+
+<hr>
+
+{{=projects}}
+
+<hr>
+
+{{for project in projects:}}
+    {{=project.rewards}}
+    <br><br>
+    {{for reward in project.rewards:}}
+        {{=reward.backers}}
+    {{pass}}
+{{pass}}
+
+<hr>

@@ -2,16 +2,7 @@
 
 <header class="row project-header">
     <div class="col-xs-8 col-sm-10">
-        <div class="progress">
-            <div class="progress-bar{{if project.percent == 0:}} progress-bar-danger{{elif project.percent >= 100:}} progress-bar-success{{pass}}"
-                role="progressbar"
-                aria-valuenow="{{=project.total}}"
-                aria-valuemin="0"
-                aria-valuemax="{{=project.goal}}"
-                style="width: {{=project.percent}}%;">
-                £{{=project.total}} / £{{=project.goal}}
-            </div>
-        </div>
+        {{include "subview/project_progress.html"}}
     </div>
     <div class="col-xs-4 col-sm-2 text-right">
         {{if project.status.id == 2:}}
@@ -68,10 +59,3 @@
     </div>
 </div>
 
-<hr>
-
-{{=project}}
-<br><br>
-
-<br><br>
-{{=manager}}

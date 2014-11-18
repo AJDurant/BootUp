@@ -1,0 +1,10 @@
+<div class="project-progress progress">
+    <div class="progress-bar{{if project.percent() == 0:}} progress-bar-danger{{elif project.percent() >= 100:}} progress-bar-success{{pass}}"
+        role="progressbar"
+        aria-valuenow="{{=project.total}}"
+        aria-valuemin="0"
+        aria-valuemax="{{=project.goal}}"
+        style="width: {{=project.percent()}}%;">
+        £{{=project.total}} / £{{=project.goal}}
+    </div>
+</div>

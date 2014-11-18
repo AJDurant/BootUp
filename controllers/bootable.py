@@ -27,7 +27,7 @@ def view():
     project = db.project(request.args(0,cast=int)) or redirect(URL('default', 'index'))
 
     # Make 'not available' projects unviewable
-    if project.status == 1:
+    if project.status.id == 1:
         redirect(URL('default', 'index'))
 
     # Set page title
@@ -35,27 +35,7 @@ def view():
     response.subtitle = project.sdesc
 
     # Get the referenced lookup infomation
-    project.category = db.category(project.category)
-    project.status = db.status(project.status)
     manager = db.auth_user(project.manager)
-
-    # Get project rewards as a python list of dicts
-    project.rewards = db(db.reward.projectid==project.id).select().as_list()
-
-    # Get project pledges and calcumate progress
-    project.pledges = db(db.pledge.projectid==project.id).select().as_list()
-    project.total = sum(pledge['amount'] for pledge in project.pledges)
-    project.percent = (project.total * 100) / project.goal
-
-    # Calculate backers for each reward level
-    for i,reward in enumerate(project.rewards):
-        project.rewards[i]['backers'] = sum(pledge['amount'] >= reward['amount'] for pledge in project.pledges)
-
-    # Get friendly name for users
-    for i,pledge in enumerate(project.pledges):
-        project.pledges[i]['username'] = db(db.auth_user.id==pledge['userid']).select().first().username
-
-
 
     return locals()
 
@@ -188,4 +168,6 @@ def manager():
     their Bootables from this page, but only if they are not Open for Pledges.
     """
 
-    return dict()
+    projects = db(db.project.manager == auth.user_id).select()
+
+    return locals()
