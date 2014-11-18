@@ -51,6 +51,7 @@ def view():
     for i,reward in enumerate(project.rewards):
         project.rewards[i]['backers'] = sum(pledge['amount'] >= reward['amount'] for pledge in project.pledges)
 
+    # Get friendly name for users
     for i,pledge in enumerate(project.pledges):
         project.pledges[i]['username'] = db(db.auth_user.id==pledge['userid']).select().first().username
 
@@ -161,12 +162,18 @@ def edit():
         pass
 
     # Set page title
-    response.title = 'Edit Bootable: ' + project.title
+    response.title = 'Edit Bootable'
+    response.subtitle = project.title
 
     # Get rewards - this happens after form processing, so that latest reward is added
-    rewards = db(db.reward.projectid==project.id).select()
+    project.rewards = db(db.reward.projectid==project.id).select()
 
-    return dict(rewards=rewards, editform=editform, rewardform=rewardform)
+    # Disable editing if project has been opened
+    if project.status != 1:
+        editform = None
+        rewardform = None
+
+    return locals()
 
 @auth.requires_login()
 def manager():

@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-4 col-sm-2">
+    <div class="col-xs-4 col-sm-2 text-right">
         {{if project.status.id == 2:}}
             {{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
                 <button type="button" class="btn btn-info disabled">Pledged!</button>
@@ -30,8 +30,12 @@
 
 <div class="row">
     <div class="col-sm-6">
+        <h2>At a glance</h2>
         <p class="product-description">{{=project.ldesc}}</p>
-
+        <br>
+        <h4 class="product-goal">Funding Goal: <small>£{{=project.goal}}</small></h4>
+        <h4 class="product-pledge-num">Number of Pledges: <small>{{=len(project.pledges)}}</small></h4>
+        <h4 class="product-total">Funding Total: <small>£{{=project.total}}</small></h4>
     </div>
     <div class="col-sm-6 project-image">
         <img src="{{=URL('default', 'download',args=project.img)}}" class="img-responsive" align="right">
@@ -40,11 +44,11 @@
 <div class="row">
     <div class="col-md-6">
         <div class="project-story">
-            <h4>Bootable Story</h4>
+            <h3>Bootable Story</h3>
             <p>{{=project.story}}</p>
         </div>
         <div class="project-pledges">
-            <h4>Pledges</h4>
+            <h3>Pledges</h3>
             {{if project.pledges:}}
                 {{include "subview/pledge_display.html"}}
             {{else:}}
@@ -54,7 +58,7 @@
     </div>
     <div class="col-md-6">
         <div class="project-rewards">
-            <h4>Rewards</h4>
+            <h3>Rewards</h3>
             {{if project.rewards:}}
                 {{include "subview/reward_display.html"}}
             {{else:}}

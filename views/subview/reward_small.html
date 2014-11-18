@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Rewards</span>
+    </div>
+
+    <table class="table">
+            <thead>
+                <th>Amount</th>
+                <th>Reward</th>
+            </thead>
+        {{for reward in project.rewards:}}
+            <tr>
+                <td>£{{=reward['amount']}}</td>
+                <td>{{=reward['reward']}}</td>
+            </tr>
+        {{pass}}
+    </table>
+</div>
