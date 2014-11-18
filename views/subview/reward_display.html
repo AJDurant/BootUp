@@ -1,0 +1,11 @@
+{{for reward in project.rewards:}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">£{{=reward['amount']}} or more</span>
+        <span class="pull-right">{{=reward['backers']}} {{if reward['backers'] == 1:}}backer{{else:}}backers{{pass}}</span>
+    </div>
+    <div class="panel-body">
+        {{=reward['reward']}}
+    </div>
+</div>
+{{pass}}

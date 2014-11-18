@@ -1,0 +1,73 @@
+{{extend 'layout.html'}}
+
+<header class="row project-header">
+    <div class="col-xs-8 col-sm-10">
+        <div class="progress">
+            <div class="progress-bar{{if project.percent == 0:}} progress-bar-danger{{elif project.percent >= 100:}} progress-bar-success{{pass}}"
+                role="progressbar"
+                aria-valuenow="{{=project.total}}"
+                aria-valuemin="0"
+                aria-valuemax="{{=project.goal}}"
+                style="width: {{=project.percent}}%;">
+                £{{=project.total}} / £{{=project.goal}}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        {{if project.status.id == 2:}}
+            {{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
+                <button type="button" class="btn btn-info disabled">Pledged!</button>
+            {{else:}}
+                <button type="button" class="btn btn-primary">Give a Booting!</button>
+            {{pass}}
+        {{elif project.status.id == 3:}}
+            <button type="button" class="btn btn-success disabled">{{=project.status.name}}!</button>
+        {{elif project.status.id == 4:}}
+            <button type="button" class="btn btn-danger disabled">{{=project.status.name}}!</button>
+        {{pass}}
+    </div>
+</header>
+
+<div class="row">
+    <div class="col-md-5">
+        <p class="product-description">{{=project.ldesc}}</p>
+
+    </div>
+    <div class="col-md-7 project-image">
+        <img src="{{=URL('default', 'download',args=project.img)}}" class="img-responsive" align="right">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="project-story">
+            <h4>Bootable Story</h4>
+            <p>{{=project.story}}</p>
+        </div>
+        <div class="project-pledges">
+            <h4>Pledges</h4>
+            {{if project.pledges:}}
+                {{include "subview/pledge_display.html"}}
+            {{else:}}
+                <p>No pledges so far!</p>
+            {{pass}}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="project-rewards">
+            <h4>Rewards</h4>
+            {{if project.rewards:}}
+                {{include "subview/reward_display.html"}}
+            {{else:}}
+                <p>This Bootable has no rewards! Oh Dear!</p>
+            {{pass}}
+        </div>
+    </div>
+</div>
+
+<hr>
+
+{{=project}}
+<br><br>
+
+<br><br>
+{{=manager}}

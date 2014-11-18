@@ -5,6 +5,41 @@
  */
 
 
+/* Project
+-------------------------------------------------- */
+.project-header {
+    margin-bottom: 20px;
+}
+
+.project-header .progress {
+    margin: 0;
+    margin-top: 7px;
+}
+.project-header .progress-bar {
+    min-width: 15%;
+    max-width: 100%;
+}
+
+.project-image {
+text-align: right;
+}
+
+/* Project Edit
+-------------------------------------------------- */
+
+/* hide id field on edit form */
+div#project_id__row {
+    visibility: hidden;
+    display: none;
+}
+
+
+
+
+/* Global Layout
+--------------------------------------------------
+-------------------------------------------------- */
+
 
 /* Sticky footer
 -------------------------------------------------- */
@@ -37,11 +72,8 @@ body {
 }
 
 
-/* hide id field on edit form */
-div#project_id__row {
-    visibility: hidden;
-    display: none;
-}
+/* Form overides
+-------------------------------------------------- */
 
 div#submit_record__row input,
 div#submit_record__row button {
@@ -81,9 +113,10 @@ div.flash {
     z-index:2000;
 }
 
-div.flash #closeflash{color:inherit; float:right; margin-left:15px;}
-.ie-lte7  div.flash #closeflash
-{color:expression(this.parentNode.currentStyle['color']);float:none;position:absolute;right:4px;}
+div.flash #closeflash {
+    color:inherit;
+    opacity: .8;
+}
 
 div.flash:hover { opacity:0.25; }
 

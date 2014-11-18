@@ -8,7 +8,7 @@ This is the bootable controller
 
 """
 
-def project():
+def view():
     """
     Bootable Pages and Pledging
 
@@ -25,6 +25,36 @@ def project():
     """
 
     project = db.project(request.args(0,cast=int)) or redirect(URL('default', 'index'))
+
+    # Make 'not available' projects unviewable
+    if project.status == 1:
+        redirect(URL('default', 'index'))
+
+    # Set page title
+    response.title = project.title
+    response.subtitle = project.sdesc
+
+    # Get the referenced lookup infomation
+    project.category = db.category(project.category)
+    project.status = db.status(project.status)
+    manager = db.auth_user(project.manager)
+
+    # Get project rewards as a python list of dicts
+    project.rewards = db(db.reward.projectid==project.id).select().as_list()
+
+    # Get project pledges and calcumate progress
+    project.pledges = db(db.pledge.projectid==project.id).select().as_list()
+    project.total = sum(pledge['amount'] for pledge in project.pledges)
+    project.percent = (project.total * 100) / project.goal
+
+    # Calculate backers for each reward level
+    for i,reward in enumerate(project.rewards):
+        project.rewards[i]['backers'] = sum(pledge['amount'] >= reward['amount'] for pledge in project.pledges)
+
+    for i,pledge in enumerate(project.pledges):
+        project.pledges[i]['username'] = db(db.auth_user.id==pledge['userid']).select().first().username
+
+
 
     return locals()
 
@@ -50,7 +80,7 @@ def create():
     form.vars.manager = auth.user_id
 
     if form.process().accepted:
-        response.flash = 'Project Submitted'
+        response.flash = 'Bootable Created'
         # Redirect to edit page for adding rewards
         # TODO
     elif form.errors:
@@ -73,16 +103,37 @@ def edit():
     # Get project or redirect
     project = db.project(request.args(0,cast=int)) or redirect(URL('default', 'index'))
 
+    # Stop non-managers from editing the Bootable
     if project.manager != auth.user_id:
         redirect(URL('default', 'index'))
 
-    # Setup form, using bootstrap style - not tables!
+    # Setup forms, using bootstrap style - not tables!
     editform = SQLFORM(db.project, project, formstyle='bootstrap3_inline')
+    rewardform = SQLFORM(db.reward, formstyle='bootstrap3_inline')
+
+    rewardform.vars.projectid = project.id
+
+    if editform.process().accepted:
+        response.flash = 'Bootable Updated'
+    elif editform.errors:
+        response.flash = 'Error with form'
+    else:
+        pass
+
+    if rewardform.process().accepted:
+        response.flash = 'Reward Added'
+    elif rewardform.errors:
+        response.flash = 'Error with form'
+    else:
+        pass
 
     # Set page title
     response.title = 'Edit Bootable: ' + project.title
 
-    return dict(editform=editform)
+    # Get rewards - this happens after form processing, so that latest reward is added
+    rewards = db(db.reward.projectid==project.id).select()
+
+    return dict(rewards=rewards, editform=editform, rewardform=rewardform)
 
 @auth.requires_login()
 def manager():

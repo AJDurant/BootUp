@@ -47,28 +47,40 @@ db.project.img.requires = IS_IMAGE(extensions=('png', 'jpg', 'jpeg', 'gif'), max
 db.project.sdesc.requires = IS_NOT_EMPTY()
 db.project.ldesc.requires = IS_NOT_EMPTY()
 db.project.story.requires = IS_NOT_EMPTY()
-db.project.manager.requires = IS_IN_DB(db, db.auth_user.id, '%(uname)s')
+db.project.manager.requires = IS_IN_DB(db, db.auth_user.id, '%(username)s')
 
 # Lookup table for project rewards
 db.define_table(
     'reward',
     Field('projectid', 'reference project', writable=False, readable=False, required=True),
-    Field('amount', 'integer', required=True),
-    Field('reward', required=True)
+    Field('amount', 'integer', required=True, comment='Minimum pledge to receive this reward in whole £s'),
+    Field('reward', required=True,
+        widget=SQLFORM.widgets.text.widget,
+        comment='Description of the reward given to those who pledge over the required amount')
 )
+
+# Reward data constraints
+db.reward.projectid.requires = IS_IN_DB(db, db.project.id, '%(title)s')
+db.reward.amount.requires = IS_NOT_EMPTY()
+db.reward.reward.requires = IS_NOT_EMPTY()
 
 # Lookup table for project pledges
 db.define_table(
     'pledge',
     Field('projectid', 'reference project', writable=False, readable=False, required=True),
-    Field('username', 'reference auth_user', required=True),
+    Field('userid', 'reference auth_user', required=True),
     Field('amount', 'integer', required=True)
 )
+
+# Pledge data constraints
+db.pledge.projectid.requires = IS_IN_DB(db, db.project.id, '%(title)s')
+db.pledge.userid.requires = IS_IN_DB(db, db.auth_user.id, '%(username)s')
+db.pledge.amount.requires = IS_NOT_EMPTY()
 
 # DB Table for User Addresses
 db.define_table(
     'address',
-    Field('username', 'reference auth_user', writable=False, readable=False, required=True),
+    Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
     Field('street', required=True),
     Field('city', required=True),
     Field('country', required=True),
@@ -80,7 +92,7 @@ db.define_table(
 # DB Table for User Credit Cards
 db.define_table(
     'cc',
-    Field('username', 'reference auth_user', writable=False, readable=False, required=True),
+    Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
     Field('address', 'reference address', required=True),
     Field('ccnum', required=True),
     Field('expires', 'date', required=True),

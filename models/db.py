@@ -6,6 +6,8 @@ This model initialises the database and constructs the auth object and tables
 
 from gluon.custom_import import track_changes; track_changes(True)
 
+from datetime import date
+
 # Setup db object
 db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
 
@@ -32,6 +34,8 @@ db.define_table(
     Field('reset_password_key', length=512, writable=False, readable=False, default=''),    # required
     Field('registration_id', length=512, writable=False, readable=False, default=''),       # required
     format='%(realname)s (%(username)s)')
+
+
 
 ## do not forget validators
 custom_auth_table = db[auth.settings.table_user_name] # get the custom_auth_table

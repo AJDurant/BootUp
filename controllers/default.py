@@ -79,3 +79,5 @@ def user():
     """
     return dict(form=auth())
 
+def download():
+    return response.download(request, db)
