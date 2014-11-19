@@ -1,0 +1,21 @@
+{{if project:}}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title"><a href="{{=URL('bootable', 'view', extension='', args=[project.id])}}">{{=project.title}}</a> <small>{{=project.sdesc}}</small></span>
+            <span class="label pull-right {{if project.status.id in [1,4]:}}label-danger{{elif project.status.id==3:}}label-success{{else:}}label-info{{pass}}">{{=project.status.name}}</span>
+            <span class="label pull-right label-primary">{{=project.category.name}}</span>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-7 col-md-8 col-lg-9">
+                {{include "subview/project_progress.html"}}
+            </div>
+            <div class="col-xs-5 col-md-4 col-lg-3 text-right">
+                <a type="button" class="btn btn-default" href="{{=URL('bootable', 'edit', extension='', args=[project.id])}}">Edit</a>
+                {{=statusForm}}
+                {{if closed:}}
+                    {{=deleteForm}}
+                {{pass}}
+            </div>
+        </div>
+    </div>
+{{pass}}

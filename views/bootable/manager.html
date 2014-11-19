@@ -2,21 +2,7 @@
 
 {{if projects:}}
     {{for project in projects:}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="panel-title"><a href="{{=URL('bootable', 'view', args=[project.id])}}">{{=project.title}}</a> <small>{{=project.sdesc}}</small></span>
-                <span class="label pull-right {{if project.status.id in [1,4]:}}label-danger{{elif project.status.id==3:}}label-success{{else:}}label-info{{pass}}">{{=project.status.name}}</span>
-                <span class="label pull-right label-primary">{{=project.category.name}}</span>
-            </div>
-            <div class="panel-body">
-                <div class="col-xs-8 col-md-9">
-                    {{include "subview/project_progress.html"}}
-                </div>
-                <div class="col-xs-4 col-md-3 text-right">
-                    {{=LOAD('bootable','updateStatus.load', args=[project.id], user_signature=True, ajax=True)}}
-                </div>
-            </div>
-        </div>
+        {{=LOAD('bootable','manageProject.load', args=[project.id], user_signature=True, ajax=True)}}
     {{pass}}
 {{else:}}
     <h3>You haven't created any Bootables yet!</h3>

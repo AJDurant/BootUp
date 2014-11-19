@@ -95,7 +95,7 @@ def create():
 
     if form.process().accepted:
         session.flash = 'Bootable Created'
-        redirect(URL('bootable', 'edit', args=project.id))
+        redirect(URL('bootable', 'edit', args=form.vars.id))
     elif form.errors:
         response.flash = 'Error with form'
     else:
@@ -128,7 +128,7 @@ def edit():
 
     if editform.process().accepted:
         session.flash = 'Bootable Updated'
-        redirect(URL('bootable', 'view', args=project.id))
+        redirect(URL('bootable', 'view', args=[project.id]))
     elif editform.errors:
         response.flash = 'Error with form'
     else:
@@ -173,7 +173,7 @@ def manager():
     return locals()
 
 @auth.requires_login()
-def updateStatus():
+def manageProject():
     """
     This controller function is called by the manager to open and close projects
     """
@@ -188,11 +188,11 @@ def updateStatus():
 
     statusForm = FORM(
         TAG.button(buttonText, _type="submit", _class="btn btn-primary"),
-        _action=URL('bootable', 'updateStatus', args=[project.id]),
+        _action=URL('bootable', 'manageProject', args=[project.id]),
         _style="display: inline-block;"
     )
 
-    if statusForm.process().accepted:
+    if statusForm.process(formname='status').accepted:
         if closed:
             # Not Open -> Open for Pledges
             db.project[project.id] = dict(status = 2)
@@ -205,30 +205,27 @@ def updateStatus():
                 # Not Funded
                 db.project[project.id] = dict(status = 4)
 
-        response.flash = 'Bootable Updated'
         session.flash = 'Bootable Updated'
-        redirect(URL('bootable', 'manager', extension=''), client_side=True)
+        # Reload this object to update all elements
+        redirect(URL('bootable', 'manageProject', args=[project.id]))
     elif statusForm.errors:
         response.flash = 'Error updating status'
     else:
         pass
 
-    if closed:
-        deleteForm = FORM(
-            TAG.button('Delete', _type="submit", _class="btn btn-danger"),
-            _action=URL('bootable', 'updateStatus', args=[project.id]),
-            _style="display: inline-block;"
-        )
+    deleteForm = FORM(
+        TAG.button('Delete', _type="submit", _class="btn btn-danger"),
+        _action=URL('bootable', 'manageProject', args=[project.id]),
+        _style="display: inline-block;"
+    )
 
-        if deleteForm.process().accepted:
-            db(db.project.id==project.id).delete()
-            response.flash = 'Bootable Deleted'
-            session.flash = 'Bootable Deleted'
-            redirect(URL('bootable', 'manager', extension=''), client_side=True)
-        elif statusForm.errors:
-            response.flash = 'Error deleting Bootable'
-    else:
-        deleteForm = None
+    if deleteForm.process(formname='delete').accepted:
+        db(db.project.id==project.id).delete()
+        response.flash = 'Bootable Deleted'
+        # Remove this object with jQuery
+        response.js =  "jQuery('#%s').remove()" % request.env.http_web2py_component_element
+    elif statusForm.errors:
+        response.flash = 'Error deleting Bootable'
 
-    return dict(statusForm=statusForm, deleteForm=deleteForm)
+    return dict(project=project, closed=closed, statusForm=statusForm, deleteForm=deleteForm)
 
