@@ -1,0 +1,4 @@
+{{=statusForm}}
+{{if deleteForm:}}
+    {{=deleteForm}}
+{{pass}}

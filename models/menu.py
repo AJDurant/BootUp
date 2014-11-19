@@ -27,7 +27,8 @@ response.google_analytics_id = None
 
 response.menu = [
     ('Home', False, URL('default', 'index'), []),
-    ('Create Bootable', False, URL('bootable', 'create'), [])
+    ('Create Bootable', False, URL('bootable', 'create'), []),
+    ('Manage Bootables', False, URL('bootable', 'manager'), [])
 ]
 
 DEVELOPMENT_MENU = True

@@ -171,3 +171,64 @@ def manager():
     projects = db(db.project.manager == auth.user_id).select()
 
     return locals()
+
+@auth.requires_login()
+def updateStatus():
+    """
+    This controller function is called by the manager to open and close projects
+    """
+    project = db.project(request.args(0,cast=int))
+
+    if project.status.id in [1,3,4]:
+        closed = True
+        buttonText = 'Open Bootable'
+    else:
+        closed = False
+        buttonText = 'Close Bootable'
+
+    statusForm = FORM(
+        TAG.button(buttonText, _type="submit", _class="btn btn-primary"),
+        _action=URL('bootable', 'updateStatus', args=[project.id]),
+        _style="display: inline-block;"
+    )
+
+    if statusForm.process().accepted:
+        if closed:
+            # Not Open -> Open for Pledges
+            db.project[project.id] = dict(status = 2)
+        else:
+            # Open ->
+            if project.total >= project.goal:
+                # Funded
+                db.project[project.id] = dict(status = 3)
+            else:
+                # Not Funded
+                db.project[project.id] = dict(status = 4)
+
+        response.flash = 'Bootable Updated'
+        session.flash = 'Bootable Updated'
+        redirect(URL('bootable', 'manager', extension=''), client_side=True)
+    elif statusForm.errors:
+        response.flash = 'Error updating status'
+    else:
+        pass
+
+    if closed:
+        deleteForm = FORM(
+            TAG.button('Delete', _type="submit", _class="btn btn-danger"),
+            _action=URL('bootable', 'updateStatus', args=[project.id]),
+            _style="display: inline-block;"
+        )
+
+        if deleteForm.process().accepted:
+            db(db.project.id==project.id).delete()
+            response.flash = 'Bootable Deleted'
+            session.flash = 'Bootable Deleted'
+            redirect(URL('bootable', 'manager', extension=''), client_side=True)
+        elif statusForm.errors:
+            response.flash = 'Error deleting Bootable'
+    else:
+        deleteForm = None
+
+    return dict(statusForm=statusForm, deleteForm=deleteForm)
+
