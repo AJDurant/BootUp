@@ -168,11 +168,14 @@ def manager():
     their Bootables from this page, but only if they are not Open for Pledges.
     """
 
+    response.title = 'Bootable Manager'
+
     projects = db(db.project.manager == auth.user_id).select()
 
     return locals()
 
 @auth.requires_login()
+@auth.requires_signature()
 def manageProject():
     """
     This controller function is called by the manager to open and close projects
@@ -188,7 +191,7 @@ def manageProject():
 
     statusForm = FORM(
         TAG.button(buttonText, _type="submit", _class="btn btn-primary"),
-        _action=URL('bootable', 'manageProject', args=[project.id]),
+        _action=URL('bootable', 'manageProject', args=[project.id], user_signature=True),
         _style="display: inline-block;"
     )
 
@@ -207,7 +210,7 @@ def manageProject():
 
         session.flash = 'Bootable Updated'
         # Reload this object to update all elements
-        redirect(URL('bootable', 'manageProject', args=[project.id]))
+        redirect(URL('bootable', 'manageProject', args=[project.id], user_signature=True))
     elif statusForm.errors:
         response.flash = 'Error updating status'
     else:
@@ -215,7 +218,7 @@ def manageProject():
 
     deleteForm = FORM(
         TAG.button('Delete', _type="submit", _class="btn btn-danger"),
-        _action=URL('bootable', 'manageProject', args=[project.id]),
+        _action=URL('bootable', 'manageProject', args=[project.id], user_signature=True),
         _style="display: inline-block;"
     )
 
