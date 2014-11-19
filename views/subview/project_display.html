@@ -1,0 +1,27 @@
+{{if project:}}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title truncate">
+                <a href="{{=URL('bootable', 'view', extension='', args=[project.id])}}">{{=project.title}}</a>
+            </span>
+            <span class="label pull-right {{if project.status.id in [1,4]:}}label-danger{{elif project.status.id==3:}}label-success{{else:}}label-info{{pass}}">{{=project.status.name}}</span>
+            <button class="label pull-right label-primary project-category">{{=project.category.name}}</button>
+        </div>
+        <div class="panel-body">
+
+                <div class="col-xs-7 col-md-8 col-lg-9">
+                    {{include "subview/project_progress.html"}}
+                </div>
+                <div class="col-xs-5 col-md-4 col-lg-3 text-right">
+                    {{block buttons}}
+                        {{include "subview/pledge_button.html"}}
+                    {{end}}
+                </div>
+
+                {{=project.sdesc}}
+
+        </div>
+    </div>
+{{pass}}
+
+{{response.files.insert(4,URL('static','js/bootup.js'))}}

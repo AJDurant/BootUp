@@ -16,7 +16,7 @@
     margin-top: 7px;
 }
 .project-progress .progress-bar {
-    min-width: 15%;
+    min-width: 75px;
     max-width: 100%;
 }
 
@@ -35,10 +35,23 @@ div#project_id__row {
 
 
 
+.panel-title.truncate {
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+
 
 /* Global Layout
 --------------------------------------------------
 -------------------------------------------------- */
+
+button.label {
+    border: none;
+}
 
 
 /* Sticky footer

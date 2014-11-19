@@ -1,4 +1,9 @@
 {{extend 'layout.html'}}
 
-{{=results}}
-
+{{if results:}}
+    {{for project in results:}}
+        {{include "subview/project_display.html"}}
+    {{pass}}
+{{else:}}
+    <div class="alert alert-info" role="alert">No Results</div>
+{{pass}}

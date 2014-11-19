@@ -17,7 +17,13 @@ def index():
     response.title = "BootUp"
     response.subtitle = "the next big crowdfunding web application in the UK"
 
-    return dict()
+    # Get 5 most recent Bootables
+    recent = db(db.project.status != 1).select(orderby=~db.project.id, limitby=(0,5))
+
+    # Get 5 nearest funding
+    closest = db(db.project.status != 1).select().sort(lambda row: row.percent(), reverse=True).find(lambda row: row.percent() < 100, limitby=(0,5))
+
+    return locals()
 
 def search():
     """
@@ -48,12 +54,23 @@ def search():
         _action=URL('default', 'search', extension=''))
 
     if form.accepts(request,session):
-        response.flash = 'Search successful!'
+
         # Put search query in subtitle
         response.subtitle = form.vars.search
-        # Search db for projects, either from short description, title or category
-        # TODO
-        results = form.vars.search
+
+        # Get matching categories for search
+        catList = [cat['id'] for cat in db(db.category.name.contains(form.vars.search)).select().as_list()]
+
+        # Search db for projects, either from short description or title or category
+        query = (
+            db.project.category.belongs(catList)
+            | db.project.title.contains(form.vars.search)
+            | db.project.sdesc.contains(form.vars.search)
+        )
+
+        # Get search results - but only projects that have been opened
+        results = db(query).select().find(lambda row: row.status != 1)
+
     elif form.errors:
         response.flash = 'Search has errors!'
         results = None

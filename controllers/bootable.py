@@ -178,7 +178,7 @@ def manager():
 @auth.requires_signature()
 def manageProject():
     """
-    This controller function is called by the manager to open and close projects
+    This controller displays projects with functions for opening/closing and deleting
     """
     project = db.project(request.args(0,cast=int))
 
