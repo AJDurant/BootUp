@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-sm-6">
         <h2>At a glance</h2>
-        <p class="product-description">{{=project.ldesc}}</p>
+        <p class="product-description">{{=project.ldesc}}</p> <!-- TODO line breaks -->
         <br>
         <h4 class="product-goal">Funding Goal: <small>£{{=project.goal}}</small></h4>
         <h4 class="product-pledge-num">Number of Pledges: <small>{{=len(project.pledges)}}</small></h4>
@@ -27,6 +27,7 @@
         <div class="project-story">
             <h3>Bootable Story</h3>
             <p>{{=project.story}}</p>
+            <!-- TODO line breaks -->
         </div>
         <div class="project-pledges">
             <h3>Pledges</h3>

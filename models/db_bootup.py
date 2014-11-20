@@ -100,11 +100,11 @@ db.pledge.pledger = Field.Virtual(
     'pledger',
     lambda row: db.auth_user(row.pledge.userid))
 
-
 # Pledge data constraints
 db.pledge.projectid.requires = IS_IN_DB(db, db.project.id, '%(title)s')
 db.pledge.userid.requires = IS_IN_DB(db, db.auth_user.id, '%(username)s')
 db.pledge.amount.requires = IS_NOT_EMPTY()
+
 
 # DB Table for User Addresses
 db.define_table(
@@ -113,10 +113,11 @@ db.define_table(
     Field('street', required=True),
     Field('city', required=True),
     Field('country', required=True),
-    Field('post1', required=True, label='Post Code (1)', comment='The outward code, eg. YO10'),
-    Field('post2', required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
+    Field('post1', length=4, required=True, label='Post Code (1)', comment='The outward code, eg. YO10'),
+    Field('post2', length=4, required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
     format='%(street)s'
 )
+# TODO constraints
 
 # DB Table for User Credit Cards
 db.define_table(
@@ -127,4 +128,5 @@ db.define_table(
     Field('expires', 'date', required=True, label='Expiry Date', comment='Date format is YYYY-MM-DD'),
     Field('pic', 'integer', required=True, label='CVC', comment='3 digit security code on back of card. Note this should not be stored by any reputable organisation, they will get fined for doing so.')
 )
+# TODO constraints
 
