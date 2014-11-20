@@ -182,15 +182,18 @@ def manageProject():
     """
     project = db.project(request.args(0,cast=int))
 
-    if project.status.id in [1,3,4]:
+    if project.status.id in [1,4]:
         closed = True
-        buttonText = 'Open Bootable'
+        button = TAG.button('Open Bootable', _type="submit", _class="btn btn-primary")
+    elif project.status.id == 3:
+        closed = True
+        button = TAG.button('Funded', _type="submit", _class="btn btn-success disabled")
     else:
         closed = False
-        buttonText = 'Close Bootable'
+        button = TAG.button('Close Bootable', _type="submit", _class="btn btn-danger")
 
     statusForm = FORM(
-        TAG.button(buttonText, _type="submit", _class="btn btn-primary"),
+        button,
         _action=URL('bootable', 'manageProject', args=[project.id], user_signature=True),
         _style="display: inline-block;"
     )
