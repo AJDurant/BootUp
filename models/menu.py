@@ -10,7 +10,7 @@ response.logo = A(
                     _class="navbar-brand",
                     _href="/BootUp"
                 )
-response.title = request.application.replace('_',' ').title()
+response.title = 'BootUp'
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html

@@ -113,8 +113,8 @@ db.define_table(
     Field('street', required=True),
     Field('city', required=True),
     Field('country', required=True),
-    Field('post1', required=True),
-    Field('post2', required=True),
+    Field('post1', required=True, label='Post Code (1)', comment='The outward code, eg. YO10'),
+    Field('post2', required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
     format='%(street)s'
 )
 
@@ -122,9 +122,9 @@ db.define_table(
 db.define_table(
     'cc',
     Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
-    Field('address', 'reference address', required=True),
-    Field('ccnum', required=True),
-    Field('expires', 'date', required=True),
-    Field('pic', 'integer', required=True)
+    Field('address', 'reference address', required=True, comment='Billing address associated with the card'),
+    Field('ccnum', required=True, label='Card Number', comment='Full 16 digit card number. Note this is not stored securely.'),
+    Field('expires', 'date', required=True, label='Expiry Date', comment='Date format is YYYY-MM-DD'),
+    Field('pic', 'integer', required=True, label='CVC', comment='3 digit security code on back of card. Note this should not be stored by any reputable organisation, they will get fined for doing so.')
 )
 

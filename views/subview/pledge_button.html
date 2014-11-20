@@ -1,11 +1,17 @@
+{{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
+    {{ pledge = [pledge['amount'] for pledge in project.pledges if pledge['userid']==auth.user_id][0] }}
+{{else:}}
+    {{ pledge = None }}
+{{pass}}
+
 {{if project.status.id == 2:}}
-    {{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
-        <button type="button" class="btn btn-info disabled">Pledged!</button>
+    {{if pledge:}}
+        <button type="button" class="btn btn-info disabled">Pledged! £{{=pledge}}</button>
     {{else:}}
         <a type="button" class="btn btn-primary" href="{{=URL('bootable', 'pledge', args=[project.id])}}">Give a Booting!</a>
     {{pass}}
 {{elif project.status.id == 3:}}
-    <button type="button" class="btn btn-success disabled">{{=project.status.name}}!</button>
+    <button type="button" class="btn btn-success disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
 {{elif project.status.id == 4:}}
-    <button type="button" class="btn btn-danger disabled">{{=project.status.name}}!</button>
+    <button type="button" class="btn btn-danger disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
 {{pass}}

@@ -94,7 +94,53 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
-    return dict(form=auth())
+    form = auth()
+
+    if request.args(0)=='profile':
+
+        # Form to add addresses
+        addressForm = SQLFORM(db.address, formstyle='bootstrap3_inline')
+
+        # Set the user to current logged in
+        addressForm.vars.userid = auth.user_id
+
+        # Process form
+        if addressForm.process().accepted:
+            response.flash = 'Address added'
+        elif addressForm.errors:
+            response.flash = 'Error with address'
+        else:
+            pass
+
+        # Credit Card form to add cards
+        ccForm = SQLFORM(db.cc, formstyle='bootstrap3_inline')
+
+        # Set the user to current logged in
+        ccForm.vars.userid = auth.user_id
+
+        # Process form
+        if ccForm.process().accepted:
+            response.flash = 'Credit card added'
+        elif ccForm.errors:
+            response.flash = 'Error with credit card'
+        else:
+            pass
+
+        # Get values after form.process to have the latest data
+        # Get Addresses
+        addresses = db(db.address.userid==auth.user_id).select()
+        # Get Credit cards
+        ccs = db(db.cc.userid==auth.user_id).select()
+
+        # Get projects contribuded to
+        projects = db(db.project.id==db.pledge.projectid)(db.pledge.userid==auth.user_id).select(db.project.ALL)
+
+        # Set profile title
+        response.title = auth.user.realname
+
+    response.subtitle = T( request.args(0).replace('_',' ').capitalize() )
+
+    return locals()
 
 def download():
     return response.download(request, db)

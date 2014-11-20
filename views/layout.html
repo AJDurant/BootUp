@@ -21,7 +21,7 @@
         {{response.include_meta()}}
 
         <!-- http://dev.w3.org/html5/markup/meta.name.html -->
-        <title>{{=response.title or request.application}}</title>
+        <title>{{=response.title}}</title>
 
         <!-- include stylesheets -->
         <link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
