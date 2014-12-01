@@ -28,6 +28,7 @@ def view():
 
     # Make 'not available' projects unviewable
     if project.status.id == 1:
+        session.flash = 'Bootable not available'
         redirect(URL('default', 'index'))
 
     # Set page title
@@ -118,6 +119,7 @@ def edit():
 
     # Stop non-managers from editing the Bootable
     if project.manager != auth.user_id:
+        session.flash = 'Bootable not available'
         redirect(URL('default', 'index'))
 
     # Setup forms, using bootstrap style - not tables!

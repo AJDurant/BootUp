@@ -32,7 +32,7 @@ db.define_table(
     Field('goal', 'integer', required=True, label='Funding Goal', comment='What do you aim to raise? (in GBP £)'),
     Field('img', 'upload', autodelete=True, uploadseparate=True, label='Image', comment='Give your Bootable an image. Max Size: 1024x768 (jpg, png or gif) recommended: 4:3 ratio'),
     Field('sdesc', 'string', length=120, required=True, label='Short Description', comment='Describe your Bootable in 120 characters or less.'),
-    Field('ldesc', 'text', required=True, label='Long Description'),
+    Field('ldesc', 'text', required=True, label='Long Description', comment='What are your project goals?'),
     Field('story', 'text', required=True, label='Story', comment='Why do you want this project funded?'),
     Field('manager', 'reference auth_user', writable=False, readable=False, required=True),
     format='%(title)s'
@@ -114,7 +114,7 @@ db.define_table(
     Field('city', required=True),
     Field('country', required=True),
     Field('post1', length=4, required=True, label='Post Code (1)', comment='The outward code, eg. YO10'),
-    Field('post2', length=4, required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
+    Field('post2', length=3, required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
     format='%(street)s'
 )
 # TODO constraints
@@ -124,7 +124,7 @@ db.define_table(
     'cc',
     Field('userid', 'reference auth_user', writable=False, readable=False, required=True),
     Field('address', 'reference address', required=True, comment='Billing address associated with the card'),
-    Field('ccnum', required=True, label='Card Number', comment='Full 16 digit card number. Note this is not stored securely.'),
+    Field('ccnum', length=12, required=True, label='Card Number', comment='Full 12 digit card number. Note this is not stored securely.'),
     Field('expires', 'date', required=True, label='Expiry Date', comment='Date format is YYYY-MM-DD'),
     Field('pic', 'integer', required=True, label='CVC', comment='3 digit security code on back of card. Note this should not be stored by any reputable organisation, they will get fined for doing so.')
 )

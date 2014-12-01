@@ -18,9 +18,10 @@
                     {{end}}
                 </div>
 
-                {{=project.sdesc}}
+                <p>{{=project.sdesc}}</p>
 
         </div>
+        <a class="project-more" href="{{=URL('bootable', 'view', extension='', args=[project.id])}}">more&hellip;</a>
     </div>
 {{pass}}
 

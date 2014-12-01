@@ -14,7 +14,7 @@ def index():
     and the 5 projects closest to their funding goal.
     """
     # Set page title
-    response.title = "BootUp"
+    response.title = "Welcome to BootUp"
     response.subtitle = "the next big crowdfunding web application in the UK"
 
     # Get 5 most recent Bootables

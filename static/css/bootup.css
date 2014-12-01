@@ -16,7 +16,7 @@
     margin-top: 7px;
 }
 .project-progress .progress-bar {
-    min-width: 75px;
+    min-width: 100px;
     max-width: 100%;
 }
 
@@ -36,7 +36,7 @@ div#project_id__row {
 
 
 .panel-title.truncate {
-    max-width: 80%;
+    max-width: 60%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -51,6 +51,19 @@ div#project_id__row {
 
 button.label {
     border: none;
+}
+
+.panel {
+    position: relative;
+}
+.panel-title>a:hover {
+    text-decoration: underline;
+}
+
+.project-more {
+    position: absolute;
+    right: 20px;
+    bottom: 5px;
 }
 
 
