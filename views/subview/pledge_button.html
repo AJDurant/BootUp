@@ -12,12 +12,12 @@ Sets the pledge button based on project/pledge status
 
 {{if project.status.id == 2:}}
     {{if pledge:}}
-        <button type="button" class="btn btn-info disabled">Pledged! £{{=pledge}}</button>
+        <button type="button" class="btn btn-info{{if btn_lg:}} btn-lg{{pass}} disabled">Pledged! £{{=pledge}}</button>
     {{else:}}
-        <a type="button" class="btn btn-primary" href="{{=URL('bootable', 'pledge', args=[project.id])}}">Give a Booting!</a>
+        <a type="button" class="btn btn-primary{{if btn_lg:}} btn-lg{{pass}}" href="{{=URL('bootable', 'pledge', args=[project.id])}}">Give a Booting!</a>
     {{pass}}
 {{elif project.status.id == 3:}}
-    <button type="button" class="btn btn-success disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
+    <button type="button" class="btn btn-success{{if btn_lg:}} btn-lg{{pass}} disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
 {{elif project.status.id == 4:}}
-    <button type="button" class="btn btn-danger disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
+    <button type="button" class="btn btn-danger{{if btn_lg:}} btn-lg{{pass}} disabled">{{=project.status.name}}!{{if pledge:}} £{{=pledge}}{{pass}}</button>
 {{pass}}
