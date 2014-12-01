@@ -30,10 +30,32 @@ db.define_table(
     Field('category', 'reference category', required=True),
     Field('status', 'reference status', writable=False, readable=False, required=True),
     Field('goal', 'integer', required=True, label='Funding Goal', comment='What do you aim to raise? (in GBP £)'),
-    Field('img', 'upload', autodelete=True, uploadseparate=True, label='Image', comment='Give your Bootable an image. Max Size: 1024x768 (jpg, png or gif) recommended: 4:3 ratio'),
-    Field('sdesc', 'string', length=120, required=True, label='Short Description', comment='Describe your Bootable in 120 characters or less.'),
-    Field('ldesc', 'text', required=True, label='Long Description', comment='What are your project goals?'),
-    Field('story', 'text', required=True, label='Story', comment='Why do you want this project funded?'),
+    Field('img',
+        'upload',
+        autodelete=True,
+        uploadseparate=True,
+        label='Image',
+        comment='Give your Bootable an image. Max Size: 1024x768 (jpg, png or gif) recommended: 4:3 ratio'
+    ),
+    Field('sdesc',
+        'string',
+        length=120,
+        required=True,
+        label='Short Description',
+        comment='Describe your Bootable in 120 characters or less.'
+    ),
+    Field('ldesc',
+        'text',
+        required=True,
+        label='Long Description',
+        comment='What are your project goals?'
+    ),
+    Field('story',
+        'text',
+        required=True,
+        label='Story',
+        comment='Why do you want this project funded?'
+    ),
     Field('manager', 'reference auth_user', writable=False, readable=False, required=True),
     format='%(title)s'
 )

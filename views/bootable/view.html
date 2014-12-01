@@ -18,7 +18,7 @@ Bootable View page
 <div class="row">
     <div class="col-sm-6">
         <h2>At a glance</h2>
-        <p class="product-description">{{=project.ldesc}}</p> <!-- TODO line breaks -->
+        <p class="product-description">{{=XML(project.ldesc.replace('\n', '<br>'))}}</p>
         <br>
         <h4 class="product-goal">Funding Goal: <small>£{{=project.goal}}</small></h4>
         <h4 class="product-pledge-num">Number of Pledges: <small>{{=len(project.pledges)}}</small></h4>
@@ -32,8 +32,7 @@ Bootable View page
     <div class="col-md-6">
         <div class="project-story">
             <h3>Bootable Story</h3>
-            <p>{{=project.story}}</p>
-            <!-- TODO line breaks -->
+            <p>{{=XML(project.story.replace('\n', '<br>'))}}</p>
         </div>
         <div class="project-pledges">
             <h3>Pledges</h3>
@@ -49,7 +48,7 @@ Bootable View page
             <h3>Rewards</h3>
             {{if project.rewards:}}
                 {{for reward in project.rewards:}}
-                    {{include "subview/rewards.html"}}
+                    {{include "subview/reward_display.html"}}
                 {{pass}}
             {{else:}}
                 <p>This Bootable has no rewards! Oh Dear!</p>
