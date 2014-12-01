@@ -1,4 +1,9 @@
-{{for reward in project.rewards:}}
+{{ """
+Includable for a reward
+
+
+""" }}
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <span class="panel-title">£{{=reward['amount']}} or more</span>
@@ -8,4 +13,4 @@
         {{=reward['reward']}}
     </div>
 </div>
-{{pass}}
+

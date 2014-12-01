@@ -1,3 +1,9 @@
+{{ """
+Buttons for bootable management
+
+
+""" }}
+
 <a type="button" class="btn btn-default" href="{{=URL('bootable', 'edit', extension='', args=[project.id])}}">Edit</a>
 {{=statusForm}}
 {{if closed:}}

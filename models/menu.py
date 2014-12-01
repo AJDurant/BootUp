@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 # this file is released under public domain and you can use without limitations
 
+"""
+This model creates the menu for the app
+
+
+"""
+
 #########################################################################
 ## Customize your APP title, subtitle and menus here
 #########################################################################

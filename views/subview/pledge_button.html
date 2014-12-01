@@ -1,3 +1,9 @@
+{{ """
+Sets the pledge button based on project/pledge status
+
+
+""" }}
+
 {{if auth.user_id in [pledge['userid'] for pledge in project.pledges]:}}
     {{ pledge = [pledge['amount'] for pledge in project.pledges if pledge['userid']==auth.user_id][0] }}
 {{else:}}

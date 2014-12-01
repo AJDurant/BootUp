@@ -1,3 +1,9 @@
+{{ """
+Bootable View page
+
+
+""" }}
+
 {{extend 'layout.html'}}
 
 <header class="row project-header">
@@ -42,7 +48,9 @@
         <div class="project-rewards">
             <h3>Rewards</h3>
             {{if project.rewards:}}
-                {{include "subview/reward_display.html"}}
+                {{for reward in project.rewards:}}
+                    {{include "subview/rewards.html"}}
+                {{pass}}
             {{else:}}
                 <p>This Bootable has no rewards! Oh Dear!</p>
             {{pass}}

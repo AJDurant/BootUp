@@ -1,3 +1,9 @@
+{{ """
+Project display for managers
+
+
+""" }}
+
 {{extend 'subview/project_display.html'}}
 
 {{block buttons}}
