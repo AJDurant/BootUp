@@ -139,7 +139,6 @@ db.define_table(
     Field('post2', length=3, required=True, label='Post Code (2)', comment='The inward code, eg. 5DD'),
     format='%(street)s'
 )
-# TODO constraints
 
 # DB Table for User Credit Cards
 db.define_table(
@@ -150,5 +149,4 @@ db.define_table(
     Field('expires', 'date', required=True, label='Expiry Date', comment='Date format is YYYY-MM-DD'),
     Field('pic', 'integer', required=True, label='CVC', comment='3 digit security code on back of card. Note this should not be stored by any reputable organisation, they will get fined for doing so.')
 )
-# TODO constraints
 

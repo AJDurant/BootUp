@@ -103,6 +103,9 @@ Based upon the defualt web2py layout, but edited
                 {{include}}
                 {{end}}
 
+                <em>
+                    <a id="gototop_btn" href="#header"><span class="glyphicon glyphicon-arrow-up"></span><em>&nbsp;top</em></a>
+                </em>
             </section><!--/main-->
 
 
@@ -141,6 +144,23 @@ Based upon the defualt web2py layout, but edited
       {{pass}}
 
       <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
+      <script>
+        $(function () {
+            // scroll to top
+            var offset = 200;
+            var duration = 300;
+            $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                    $('#gototop_btn').fadeIn(duration);
+                } else {
+                    $('#gototop_btn').fadeOut(duration);
+                }
+            });
+            $("#gototop_btn").on('click', function(e) {
+            $(document).scrollTo(0, 500);
+            });
+        });
+      </script>
     </body>
 </html>
 

@@ -146,6 +146,23 @@ div.flash #closeflash {
 
 div.flash:hover { opacity:0.25; }
 
+#gototop_btn {
+width: 52px;
+height: 52px;
+position: fixed;
+bottom: 8em;
+right: -30px;
+text-decoration: none;
+color: #000000;
+background-color: rgba(153, 153, 153, 0.80);
+font-size: 12px;
+padding: 8px;
+display: none;
+z-index: 9999;
+border-radius: 36px;
+line-height: 36px;
+}
+
 .error_wrapper {
   padding: 15px;
   margin-bottom: 20px;
