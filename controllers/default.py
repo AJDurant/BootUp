@@ -96,7 +96,7 @@ def user():
     """
     form = auth()
 
-    if request.args(0)=='profile':
+    if request.args(0) == 'profile':
 
         # Form to add addresses
         addressForm = SQLFORM(db.address, formstyle='bootstrap3_inline')
@@ -137,6 +137,7 @@ def user():
 
         # Set profile title
         response.title = auth.user.realname
+
 
     response.subtitle = T( request.args(0).replace('_',' ').capitalize() )
 
