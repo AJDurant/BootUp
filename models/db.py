@@ -25,8 +25,8 @@ auth = myAuth(db)
 # Define custom user table
 db.define_table(
     auth.settings.table_user_name,
-    Field('username', length=128, unique=True),
-    Field('realname', length=128, default='', label='Name'),
+    Field('username', length=128, unique=True, comment='Unique name used for login, and publicly on the website'),
+    Field('realname', length=128, default='', label='Name', comment='Your full name'),
     Field('birthdate', 'date', required=True, comment='format: YYYY-MM-DD'),
     Field('email', length=128, default='', unique=True),                                    # required
     Field('password', 'password', length=512, readable=False, label='Password'),            # required
