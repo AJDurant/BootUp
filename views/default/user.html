@@ -9,80 +9,104 @@ User page - mostly for profile
 {{if request.args(0)=='profile':}}
 <!-- BootUp Profile customisation -->
 
-<div class="row">
-    <h2>Bootables Booted</h2>
-        <div class="col-md-12">
-        {{for project in projects:}}
-            {{include "subview/project_display.html"}}
+<div role="tabpanel">
 
-            {{pledge = [pledge['amount'] for pledge in project['pledges'] if pledge['userid']==auth.user_id][0]}}
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#bootables" aria-controls="bootables" role="tab" data-toggle="tab">Bootables</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Edit Profile</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="bootables">
+
             <div class="row">
-                {{for reward in project.rewards:}}
-                    <div class="col-sm-3">
-                        {{if reward.amount <= pledge:}}
-                            {{include "subview/reward_display.html"}}
-                        {{pass}}
-                    </div>
-                {{pass}}
-            </div>
-        {{pass}}
-    </div>
-</div>
-<hr>
-<div class="row">
-    <h2>User Data</h2>
-    <!-- Address -->
-    <div class="col-md-6">
-        <h3>Addresses</h3>
-        {{for address in addresses:}}
-            <div class="panel panel-default">
-            <div class="panel-body">
-                <dl class="address dl-horizontal">
-                    <dt>Street</dt>
-                    <dd>{{=address.street}}</dd>
-                    <dt>City</dt>
-                    <dd>{{=address.city}}</dd>
-                    <dt>Post Code</dt>
-                    <dd>{{=address.post1}}</dd>
-                    <dd>{{=address.post2}}</dd>
-                    <dt>Country</dt>
-                    <dd>{{=address.country}}</dd>
-                </dl>
-            </div>
-            </div>
-        {{pass}}
-        <h3>Add Address</h3>
-        {{=addressForm}}
-    </div>
+                <h2>Bootables Booted</h2>
+                    <div class="col-md-12">
+                    {{for project in projects:}}
+                        {{include "subview/project_display.html"}}
 
-    <!-- CC -->
-    <div class="col-md-6">
-        <h3>Credit Cards</h3>
-        {{for cc in ccs:}}
-            <div class="panel panel-default">
-            <div class="panel-body">
-                <dl class="cc dl-horizontal">
-                    <dt>Card No.</dt>
-                    <dd>{{=cc.ccnum}}</dd>
-                    <dt>Expiry</dt>
-                    <dd>{{=cc.expires}}</dd>
-                    <dt>CVC</dt>
-                    <dd>{{=cc.pic}}</dd>
-                    <dt>Address</dt>
-                    <dd>{{=cc.address.street}}</dd>
-                </dl>
+                        {{pledge = [pledge['amount'] for pledge in project['pledges'] if pledge['userid']==auth.user_id][0]}}
+                        <div class="row">
+                            <h4>Your Rewards</h4>
+
+                            {{for i,reward in enumerate(project.rewards):}}
+                                <div class="col-sm-3">
+                                    {{if reward.amount <= pledge:}}
+                                        {{include "subview/reward_display.html"}}
+                                    {{pass}}
+                                </div>
+                                {{if (i+1) % 4 == 0:}}
+                                    <div class="clearfix"></div>
+                                {{pass}}
+
+                            {{pass}}
+                        </div>
+                        <hr>
+                    {{pass}}
+                </div>
             </div>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="profile">
+
+            <div class="row">
+                <h2>User Data</h2>
+                <!-- Address -->
+                <div class="col-md-6">
+                    <h3>Addresses</h3>
+                    {{for address in addresses:}}
+                        <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dl class="address dl-horizontal">
+                                <dt>Street</dt>
+                                <dd>{{=address.street}}</dd>
+                                <dt>City</dt>
+                                <dd>{{=address.city}}</dd>
+                                <dt>Post Code</dt>
+                                <dd>{{=address.post1}}</dd>
+                                <dd>{{=address.post2}}</dd>
+                                <dt>Country</dt>
+                                <dd>{{=address.country}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    {{pass}}
+                    <h3>Add Address</h3>
+                    {{=addressForm}}
+                </div>
+
+                <!-- CC -->
+                <div class="col-md-6">
+                    <h3>Credit Cards</h3>
+                    {{for cc in ccs:}}
+                        <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dl class="cc dl-horizontal">
+                                <dt>Card No.</dt>
+                                <dd>{{=cc.ccnum}}</dd>
+                                <dt>Expiry</dt>
+                                <dd>{{=cc.expires}}</dd>
+                                <dt>CVC</dt>
+                                <dd>{{=cc.pic}}</dd>
+                                <dt>Address</dt>
+                                <dd>{{=cc.address.street}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    {{pass}}
+                    <h3>Add Credit Card</h3>
+                    {{=ccForm}}
+                </div>
+
             </div>
-        {{pass}}
-        <h3>Add Credit Card</h3>
-        {{=ccForm}}
-    </div>
 
-</div>
+            <hr>
 
-<hr>
-
-<h2>Profile Data</h2>
+            <h2>Profile Data</h2>
 
 {{pass}}
 
@@ -101,6 +125,15 @@ pass
 =form
 }}
 </div>
+
+{{if request.args(0)=='profile':}}
+<!-- BootUp Profile customisation -->
+        </div>
+    </div>
+</div>
+
+{{pass}}
+
 
 <script language="javascript"><!--
 jQuery("#web2py_user_form input:visible:enabled:first").focus();
