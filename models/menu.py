@@ -5,6 +5,7 @@
 This model creates the menu for the app
 
 
+
 """
 
 #########################################################################
@@ -20,7 +21,7 @@ response.title = 'BootUp'
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
-response.meta.author = ''
+response.meta.author = 'Andy Durant'
 response.meta.keywords = 'BootUp, bootable, crowdsource, funding'
 response.meta.generator = 'Web2py Web Framework'
 

@@ -6,6 +6,7 @@ This is the bootable controller
  - manager is used to view a users bootables and access edit for them
 
 
+
 """
 
 def view():
@@ -236,4 +237,3 @@ def manageProject():
         response.flash = 'Error deleting Bootable'
 
     return dict(project=project, closed=closed, statusForm=statusForm, deleteForm=deleteForm)
-
